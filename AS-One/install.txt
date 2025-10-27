@@ -1,0 +1,11 @@
+# Activate your virtual environment
+source /media/mosharaf/915d77f5-a895-4107-aadf-337891150b1317/workStation-myself/flask_web/venv/bin/activate
+
+# Uninstall current versions
+pip uninstall torch torchvision -y
+
+# Install CPU-only compatible versions (lighter and faster for CPU)
+pip install torch==2.5.1+cpu torchvision==0.20.1+cpu --index-url https://download.pytorch.org/whl/cpu
+
+# Ensure compatible ultralytics version
+pip install ultralytics==8.3.0

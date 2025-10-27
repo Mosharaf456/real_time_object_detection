@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YOLO Object Detection</title>
+
+    <!-- Bootstrap 3 (CDN) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap-theme.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .video-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .metric-card {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #007bff;
+        }
+        .metric-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #007bff;
+        }
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+        }
+        img {
+            max-width: 100%;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Real-time Object Detection</h1>
+
+        <!-- Upload form -->
+        <form method="post" enctype="multipart/form-data" class="form-inline" style="margin-top: 20px; margin-bottom: 20px;">
+            {{ form.hidden_tag() }}
+            <div class="form-group" style="margin-right: 10px;">
+                {{ form.file.label(class="control-label") }}
+                {{ form.file(class="form-control") }}
+            </div>
+            <div class="form-group" style="margin-right: 10px;">
+                {{ form.conf_slide.label(class="control-label") }}
+                <span id="confValue">25%</span>
+                {{ form.conf_slide(class="form-control", style="width: 200px;") }}
+            </div>
+            <div class="form-group">
+                {{ form.submit(class="btn btn-primary") }}
+            </div>
+        </form>
+        
+        <!-- Metrics Dashboard -->
+        <div class="metrics">
+            <div class="metric-card">
+                <div class="metric-value" id="fpsValue">0</div>
+                <div class="metric-label">FPS</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value" id="sizeValue">0x0</div>
+                <div class="metric-label">Frame Size</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value" id="detectValue">0</div>
+                <div class="metric-label">Current Detections</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value" id="totalDetectValue">0</div>
+                <div class="metric-label">Total Detections</div>
+            </div>
+        </div>
+
+        <!-- Live Video Stream -->
+        <div class="video-container">
+            <img src="{{ url_for('video_feed') }}" alt="Live Video Feed">
+        </div>
+
+        <button onclick="resetCounters()" style="padding: 10px 20px; background: #dc3545; color: white; border: none; border-radius: 5px; cursor: pointer;">
+            Reset Counters
+        </button>
+    </div>
+
+    <script>
+        function updateMetrics() {
+            fetch('/fpsgenerate')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('fpsValue').textContent = data.result;
+                });
+
+            fetch('/sizegenerate')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('sizeValue').textContent = data.imageSize;
+                });
+
+            fetch('/detectCount')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('detectValue').textContent = data.detectCount;
+                });
+
+            fetch('/totalDetections')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('totalDetectValue').textContent = data.totalDetections;
+                });
+        }
+
+        function resetCounters() {
+            fetch('/resetCounters')
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data.status);
+                    updateMetrics();
+                });
+        }
+
+        // Auto-update every second
+        setInterval(updateMetrics, 1000);
+        updateMetrics();
+    </script>
+
+<script>
+    const slider = document.getElementById('conf_slide');
+    const output = document.getElementById('confValue');
+
+    if (slider) {
+        output.textContent = slider.value + '%';
+        slider.oninput = function() {
+            output.textContent = this.value + '%';
+        };
+    }
+</script>
+</body>
+</html>

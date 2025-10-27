@@ -38,7 +38,7 @@ total_detections = 0    # This should match 'total_detections' from your generat
 def generate_frames(path_x = '', conf_ = 0.25):
     global current_fps, current_size, current_detections, total_detections
     
-    rtsp_url = "rtsp://cloud8:Cloud088@192.168.29.35:554/cam/realmonitor?channel=5&subtype=0"
+    rtsp_url = "rtsp://:@:/cam/realmonitor?channel=5&subtype=0"
     video = cv2.VideoCapture(rtsp_url)
     yolo_output = video_detection2(path_x=rtsp_url, conf_=conf_) ## For RTSP stream
 

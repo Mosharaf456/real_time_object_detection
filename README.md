@@ -1,6 +1,3 @@
-
-
-
 # 🎯 Real-Time Object Detection
 
 A real-time object detection application built with **Python** and **Flask REST API**, providing live video streaming and a web-based interface for detection results.
@@ -28,14 +25,14 @@ A real-time object detection application built with **Python** and **Flask REST 
 ### 1️⃣ Clone the repository
 ```bash
 git clone https://github.com/your-username/real_time_object_detection.git
-cd real_time_object_detection
-# real_time_object_detection
+cd real_time_object_detection/AS-One
 python3 -m venv venv3
 source venv3/bin/activate
 pip install --upgrade pip
 pip install -r requirements.txt
-cd AS-One
 python3 flaskApp.py
+
+UI: 
 ROOT APP1: http://IP:5005
 http://IP:5005/video?
 

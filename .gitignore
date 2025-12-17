@@ -1,1 +1,8 @@
-venv/
+venv3/
+AS-One/venv3
+__pycache__/
+*.pyc
+.DS_Store
+.idea/
+.vscode/
+*.log

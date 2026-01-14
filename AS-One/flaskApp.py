@@ -38,11 +38,14 @@ total_detections = 0    # This should match 'total_detections' from your generat
 def generate_frames(path_x = '', conf_ = 0.25):
     global current_fps, current_size, current_detections, total_detections
     
-    rtsp_url = "rtsp://username:password@IP:PORT/cam/realmonitor?channel=5&subtype=0"
-    video = cv2.VideoCapture(rtsp_url)
-    yolo_output = video_detection2(path_x=rtsp_url, conf_=conf_) ## For RTSP stream
+    ## For rtsp streaming video activation
+    # rtsp_url = "rtsp://username:password@IP:PORT/cam/realmonitor?channel=5&subtype=0"
+    # video = cv2.VideoCapture(rtsp_url)
+    # yolo_output = video_detection2(path_x=rtsp_url, conf_=conf_) ## For RTSP stream
+    
+    ## For local video file activated now
+    yolo_output = video_detection(path_x=path_x, conf_=conf_)  
 
-    # yolo_output = video_detection(path_x=path_x, conf_=conf_)  ## For local video file
     for detection_, fps_value, size_info, total_detections_count in yolo_output:
         ret, buffer = cv2.imencode('.jpg', detection_)
         current_fps = fps_value

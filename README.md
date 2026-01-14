@@ -24,7 +24,7 @@ A real-time object detection application built with **Python** and **Flask REST 
 
 ### 1️⃣ Clone the repository
 ```bash
-git clone https://github.com/your-username/real_time_object_detection.git
+git clone https://github.com/Mosharaf456/real_time_object_detection.git
 cd real_time_object_detection/AS-One
 python3 -m venv venv3
 source venv3/bin/activate

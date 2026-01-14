@@ -34,13 +34,16 @@ pip install -r requirements.txt
 RUN Project: 
 python3 flaskApp.py
 
-
-Detection UI: 
+See the Detection UI output on the simple functional web page: 
 ROOT APP1: 
 http://IP:5005
 http://IP:5005/video?
 
+http://127.0.0.1:5005:5005/video?
+
 ROOT APP2: 
 http://IP:5005/frontPage
+
+http://127.0.0.1:5005/frontPage
 
 
